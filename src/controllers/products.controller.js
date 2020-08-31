@@ -11,9 +11,9 @@ export const createProduct = async (req, res) => {
       imgURL,
     });
 
-    await newProduct.save();
+    const productSaved = await newProduct.save();
 
-    res.status(201).json(newProduct);
+    res.status(201).json(productSaved);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
