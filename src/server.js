@@ -6,12 +6,17 @@ import pkg from "../package.json";
 
 import productRoutes from "./routes/products.routes";
 import usersRoutes from "./routes/user.routes";
+import authRoutes from "./routes/auth.routes";
+
+import {initialSetup} from './libs/initialSetup'
 
 const app = express();
+initialSetup();
 
 // Settings
 app.set("pkg", pkg);
 app.set("port", process.env.PORT || 4000);
+app.set("json spaces", 4);
 
 // Middlewares
 app.use(cors());
@@ -26,11 +31,13 @@ app.get("/", (req, res) => {
     name: app.get("pkg").name,
     version: app.get("pkg").version,
     description: app.get("pkg").description,
+    author: app.get('pkg').author
   });
 });
 
 // Routes
 app.use("/api/products", productRoutes);
 app.use("/api/users", usersRoutes);
+app.use("/api/auth", authRoutes);
 
 export default app;
