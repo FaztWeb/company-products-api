@@ -21,7 +21,7 @@ export const verifyToken = async (req, res, next) => {
   }
 };
 
-export const isModerator = async (req, res) => {
+export const isModerator = async (req, res, next) => {
   try {
     const user = await User.findById(req.userId);
     const roles = await Role.find({ _id: { $in: user.roles } });
@@ -35,11 +35,12 @@ export const isModerator = async (req, res) => {
 
     return res.status(403).json({ message: "Require Moderator Role!" });
   } catch (error) {
+    console.log(error)
     return res.status(500).send({ message: error });
   }
 };
 
-export const isAdmin = async (req, res) => {
+export const isAdmin = async (req, res, next) => {
   try {
     const user = await User.findById(req.userId);
     const roles = await Role.find({ _id: { $in: user.roles } });
@@ -53,6 +54,7 @@ export const isAdmin = async (req, res) => {
 
     return res.status(403).json({ message: "Require Admin Role!" });
   } catch (error) {
+    console.log(error)
     return res.status(500).send({ message: error });
   }
 };
