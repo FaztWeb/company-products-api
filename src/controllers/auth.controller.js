@@ -42,7 +42,9 @@ export const signUp = async (req, res) => {
 export const signin = async (req, res) => {
   try {
     // Request body email can be an email or username
-    const userFound = await User.findOne({ email: req.body.email });
+    const userFound = await User.findOne({ email: req.body.email }).populate(
+      "roles"
+    );
 
     if (!userFound) return res.status(400).json({ message: "User Not Found" });
 

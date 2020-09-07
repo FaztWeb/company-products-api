@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon src/index.js --exec babel-node",
     "build": "babel src --out-dir build",
-    "start": "node build/index.js"
+    "start": "node build/index.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -24,13 +25,16 @@
     "@babel/core": "^7.11.5",
     "@babel/node": "^7.10.5",
     "@babel/preset-env": "^7.11.5",
-    "nodemon": "^2.0.4"
+    "jest": "^26.4.2",
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "helmet": "^4.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.2",
     "morgan": "^1.10.0"
