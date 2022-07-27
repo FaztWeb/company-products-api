@@ -1,7 +1,6 @@
-import Role from "../models/Role";
-import User from "../models/User";
-
-import bcrypt from "bcryptjs";
+import Role from "../models/Role.js";
+import User from "../models/User.js";
+import { ADMIN_EMAIL, ADMIN_USERNAME, ADMIN_PASSWORD } from "../config.js";
 
 export const createRoles = async () => {
   try {
@@ -26,18 +25,23 @@ export const createRoles = async () => {
 
 export const createAdmin = async () => {
   // check for an existing admin user
-  const user = await User.findOne({ email: "admin@localhost" });
+  const userFound = await User.findOne({ email: ADMIN_EMAIL });
+  console.log(userFound);
+  if (userFound) return;
+
   // get roles _id
   const roles = await Role.find({ name: { $in: ["admin", "moderator"] } });
 
-  if (!user) {
-    // create a new admin user
-    await User.create({
-      username: "admin",
-      email: "admin@localhost",
-      password: await bcrypt.hash("admin", 10),
-      roles: roles.map((role) => role._id),
-    });
-    console.log('Admin User Created!')
-  }
+  // create a new admin user
+  const newUser = await User.create({
+    username: ADMIN_USERNAME,
+    email: ADMIN_EMAIL,
+    password: ADMIN_PASSWORD,
+    roles: roles.map((role) => role._id),
+  });
+
+  console.log(`new user created: ${newUser.email}`);
 };
+
+createRoles();
+createAdmin();

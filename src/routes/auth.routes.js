@@ -1,8 +1,14 @@
 import { Router } from "express";
-const router = Router();
+import {
+  signinHandler,
+  signupHandler,
+} from "../controllers/auth.controller.js";
+import {
+  checkExistingRole,
+  checkExistingUser,
+} from "../middlewares/verifySignup.js";
 
-import * as authCtrl from "../controllers/auth.controller";
-import { verifySignup } from "../middlewares";
+const router = Router();
 
 router.use((req, res, next) => {
   res.header(
@@ -12,12 +18,8 @@ router.use((req, res, next) => {
   next();
 });
 
-router.post(
-  "/signup",
-  [verifySignup.checkDuplicateUsernameOrEmail, verifySignup.checkRolesExisted],
-  authCtrl.signUp
-);
+router.post("/signup", [checkExistingUser, checkExistingRole], signupHandler);
 
-router.post("/signin", authCtrl.signin);
+router.post("/signin", signinHandler);
 
 export default router;

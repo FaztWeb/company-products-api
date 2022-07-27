@@ -1,0 +1,10 @@
+@api = http://localhost:4000/api/auth
+
+### Signin
+POST {{api}}/signin
+Content-Type: application/json
+
+{
+  "email": "fazt@localhost.local",
+  "password": "admin"
+}

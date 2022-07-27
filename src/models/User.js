@@ -1,7 +1,7 @@
-import { Schema, model } from "mongoose";
+import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
-const productSchema = new Schema(
+const productSchema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -17,7 +17,7 @@ const productSchema = new Schema(
     },
     roles: [
       {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Role",
       },
     ],
@@ -37,4 +37,14 @@ productSchema.statics.comparePassword = async (password, receivedPassword) => {
   return await bcrypt.compare(password, receivedPassword)
 }
 
-export default model("User", productSchema);
+productSchema.pre("save", async function (next) {
+  const user = this;
+  if (!user.isModified("password")) {
+    return next();
+  }
+  const hash = await bcrypt.hash(user.password, 10);
+  user.password = hash;
+  next();
+})
+
+export default mongoose.model("User", productSchema);
